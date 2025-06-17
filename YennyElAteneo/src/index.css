@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@plugin "@midudev/tailwind-animations";
+
+@theme {
+  
+  --color-primary-dark:    #042e62;   /* Azul profundo - navbar, headers */
+  --color-background:      #e8edee;   /* Gris claro - fondo base claro */
+  --color-accent-blue:     #788fb0;   /* Azul grisáceo - botones secundarios */
+  --color-accent-red:      #a32c32;   /* Rojo terroso - botones importantes, alertas */
+  --color-accent-green:    #5e7e6c;   /* Verde grisáceo - detalles, fondos suaves */
+  --color-neutral-dark:    #1b1b1b;   /* Casi negro - texto principal en fondo claro */
+
+  --animate-infinite-scroll: infinite-scroll 25s linear infinite;
+
+  @keyframes infinite-scroll {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+
+
+}
+
