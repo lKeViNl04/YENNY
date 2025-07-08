@@ -14,7 +14,7 @@ export default function Home() {
     axios
       .get("http://localhost:5000/products/getall")
       .then((res) => {
-        setBooks(res.data);
+        setBooks(res.data.products);
       })
       .catch((err) => {
         console.error("Error fetching books:", err.message);

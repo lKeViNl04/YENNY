@@ -109,56 +109,5 @@ export const logos = (
   </>
 );
 /**/
-/*Login*/
-export const UserData = [
-  {
-    id: 1,
-    name: "Yenny",
-    email: "hola@mundo.com",
-    password: "12345678",
-    is_admin: false,
-  },
-  {
-    id: 2,
-    name: "El Ateneo",
-    email: "adios@vida.com",
-    password: "87654321",
-    is_admin: true,
-  },
-];
 
-/* */
 
-/*Cart */
-
-export const productsData = [
-  {
-    id: 1,
-    name: "One Hundred Years of Solitude",
-    author: "Gabriel García Márquez",
-    genre: "Magical Realism",
-    image:
-      "https://www.rae.es/sites/default/files/portada_cien_anos_de_soledad_0.jpg",
-    price: 20,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "1984",
-    author: "George Orwell",
-    genre: "Dystopia",
-    image:
-      "https://contentv2.tap-commerce.com/cover/large/9788426400260_1.jpg?id_com=1156&back=fad2e1",
-    price: 15,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "The Name of the Wind",
-    author: "Patrick Rothfuss",
-    genre: "Fantasy",
-    image: "https://www.edicontinente.com.ar/image/titulos/9788499082479.jpg",
-    price: 25,
-    quantity: 1,
-  },
-];

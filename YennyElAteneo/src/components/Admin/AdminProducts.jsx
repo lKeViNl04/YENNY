@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useAuth } from "../../contexts/AuthContext";
 import DeleteProductModal from "./Product/DeleteProductModal";
 import EditProductModal from "./Product/EditProductModal";
 import AddProductModal from "./Product/AddProductModal";
 
 export default function AdminProducts() {
+  
+  const {token} = useAuth();
   // ---------------------------
   // Estados del componente
   // ---------------------------
@@ -44,23 +48,27 @@ export default function AdminProducts() {
   // ---------------------------
 
   // Obtiene todos los productos desde el backend y actualiza el estado
-  const fetchProduct = () => {
-    axios
-      .get("http://localhost:5000/products/getall")
-      .then((res) => {
-        setProductData(res.data);
-      })
-      .catch((err) => {
-        console.error("Error al cargar productos:", err.message);
-      });
+  const fetchProduct = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/products/getall");
+
+      const { success, message, products } = res.data;
+      if (success) {
+        setProductData(products);
+        toast.success(message);
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Unknown error";
+      toast.error(errorMsg);
+    }
   };
 
   // Envía los datos para agregar un nuevo producto
-  const SubmitAddProduct = (e) => {
+  const SubmitAddProduct = async (e) => {
     e.preventDefault();
 
     if (!newProduct.title || !newProduct.price || !newProduct.stock) {
-      console.error("Required fields are missing to add the product");
+      toast.error("Required fields are missing to add the product");
       return;
     }
 
@@ -70,14 +78,21 @@ export default function AdminProducts() {
       stock: parseInt(newProduct.stock),
     };
 
-    axios
-      .post("http://localhost:5000/products/create", formattedProduct, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log("Product added:", res.data);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/products/create",
+        formattedProduct,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const { success, message } = res.data;
+      if (success) {
+        toast.success(message);
         setAddOpen(false);
         setNewProduct({
           title: "",
@@ -90,10 +105,11 @@ export default function AdminProducts() {
           image: "",
         });
         fetchProduct();
-      })
-      .catch((err) => {
-        console.error("Error adding product:", err.message);
-      });
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Error adding product";
+      toast.error(errorMsg);
+    }
   };
 
   // Manejador para cambios en formulario de agregar producto
@@ -111,25 +127,41 @@ export default function AdminProducts() {
   };
 
   // Envía los cambios del producto editado al backend
-  const SubmitEditProduct = (e) => {
+  const SubmitEditProduct = async (e) => {
     e.preventDefault();
+
     if (!selectedProduct || !selectedProduct.id) {
-      console.error("Product not selected or without ID");
+      toast.error("No product selected");
       return;
     }
-    axios
-      .put(
-        `http://localhost:5000/products/update/${selectedProduct.id}`,
-        selectedProduct
-      )
-      .then((res) => {
-        console.log("updating product:", res.data);
+
+    const updatedProduct = {
+      ...selectedProduct,
+      price: parseFloat(selectedProduct.price),
+      stock: parseInt(selectedProduct.stock),
+    };
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/products/update/${updatedProduct.id}`,
+        updatedProduct,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const { success, message } = res.data;
+      if (success) {
+        toast.success(message);
         setEditOpen(false);
         fetchProduct();
-      })
-      .catch((err) => {
-        console.error("Error updating product:", err.message);
-      });
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Error updating product";
+      toast.error(errorMsg);
+    }
   };
 
   // Maneja los cambios en los campos del formulario de edición
@@ -147,21 +179,32 @@ export default function AdminProducts() {
   };
 
   // Confirma la eliminación del producto seleccionado
-  const confirmDeleteProduct = () => {
+  const confirmDeleteProduct = async () => {
     if (!productToDelete || !productToDelete.id) {
-      console.error("No product selected or missing product ID for deletion");
+      toast.error("No product selected for deletion");
       return;
     }
-    axios
-      .delete(`http://localhost:5000/products/delete/${productToDelete.id}`)
-      .then((res) => {
-        console.log("Product deleted:", res.data);
+
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/products/delete/${productToDelete.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const { success, message } = res.data;
+      if (success) {
+        toast.success(message);
         setDeleteOpen(false);
-        fetchProduct(); // Vuelve a cargar la lista de productos
-      })
-      .catch((err) => {
-        console.error("Error deleting product:", err.message);
-      });
+        fetchProduct();
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Error deleting product";
+      toast.error(errorMsg);
+    }
   };
 
   // ---------------------------

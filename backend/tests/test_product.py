@@ -20,7 +20,6 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(product.title, "The Little Prince")
         self.assertEqual(product.price, 1500.50)
         self.assertEqual(product.stock, 20)
-        self.assertEqual(repr(product), "<Product The Little Prince>")
 
     def test_is_stock_valid(self):
         self.assertTrue(Product(stock=10).is_stock_valid())

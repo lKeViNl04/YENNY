@@ -3,16 +3,16 @@ export default function CartCard({ product, updateQuantity, removeItem }) {
         <li className="flex flex-col sm:flex-row items-center gap-4">
         <img
             src={product.image}
-            alt={product.name}
+            alt={product.title}
             className="w-16 h-16 object-cover rounded"
         />
 
         <div className="w-full text-center sm:text-start">
-            <h3 className="text-sm font-medium">{product.name}</h3>
+            <h3 className="text-sm font-medium">{product.title}</h3>
             <dl className="text-sm text-gray-600 mt-1">
             <div>
-                <dt className="inline">Author:</dt>
-                <dd className="inline ml-1">{product.author}</dd>
+                <dt className="inline">Language:</dt>
+                <dd className="inline ml-1">{product.language}</dd>
             </div>
             <div>
                 <dt className="inline">Genre:</dt>

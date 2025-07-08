@@ -1,3 +1,5 @@
+import axios from "axios";
+import { toast } from 'react-toastify';
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -10,12 +12,22 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const success = await login(email, password);
-    if (success) {
+    try {
+    const res = await axios.post("http://localhost:5000/users/login", {
+      email,
+      password,
+    });
+
+    if(res.data.success){
+      login(res.data)
+      toast.success(res.data.message);
       navigate("/");
-    } else {
-      alert("Incorrect credentials");
     }
+
+  } catch (err) {
+    const errorMsg = err.response?.data?.error || "Error desconocido";
+    toast.error(errorMsg);
+  }
   };
 
   return (

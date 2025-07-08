@@ -7,8 +7,16 @@ def clear_tables():
         conn = get_connection()
         cursor = conn.cursor()
 
-        cursor.execute("DELETE FROM user;")
-        cursor.execute("DELETE FROM product;")
+        # Borrado condicional
+        try:
+            cursor.execute("DELETE FROM user;")
+        except Exception as e:
+            print("⚠ Table could not be deleted 'user':", e)
+
+        try:
+            cursor.execute("DELETE FROM product;")
+        except Exception as e:
+            print("⚠ Table could not be deleted'product':", e)
 
         cursor.execute("DROP TABLE IF EXISTS user;")
         cursor.execute("DROP TABLE IF EXISTS product;")

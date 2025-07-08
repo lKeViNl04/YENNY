@@ -26,6 +26,7 @@ class ProductRepository:
         )
         self.connection.commit()
 
+    # Agrega un nuevo producto a la base de datos
     def add_product(self, product: Product):
         self.cursor.execute(
             """INSERT INTO product (title, description, genre, language, format, price, stock, image)
@@ -41,9 +42,9 @@ class ProductRepository:
                 product.image,
             ),
         )
-
         self.connection.commit()
 
+    # Actualiza un producto existente en la base de datos
     def update_product(self, product: Product):
         self.cursor.execute(
             """UPDATE product SET title = ?, description = ?, genre = ?, language = ?, format = ?,
@@ -62,20 +63,22 @@ class ProductRepository:
         )
         self.connection.commit()
 
+    # Elimina un producto de la base de datos por su ID
     def delete_product(self, product_id):
         self.cursor.execute("DELETE FROM product WHERE id = ?", (product_id,))
         self.connection.commit()
 
+    # Obtiene todos los productos de la base de datos
     def get_products(self):
         self.cursor.execute("SELECT * FROM product")
         rows = self.cursor.fetchall()
         return [Product(**dict(row)) for row in rows]
 
+    # Obtiene un producto por su ID
     def get_product_by_id(self, product_id):
         self.cursor.execute("SELECT * FROM product WHERE id = ?", (product_id,))
         row = self.cursor.fetchone()
         return Product(**dict(row)) if row else None
-
 
     def close(self):
         self.cursor.close()
