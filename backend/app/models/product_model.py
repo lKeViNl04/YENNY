@@ -21,13 +21,11 @@ class Product:
         self.stock = stock
         self.image = image
 
-    def __repr__(self):
-        return f"<Product {self.title}>"
-    
-    
+    # Verifica si el stock es un entero mayor o igual a cero
     def is_stock_valid(self):
         return isinstance(self.stock, int) and self.stock >= 0
 
+    # Verifica si el precio es un número válido mayor o igual a cero
     def is_price_valid(self):
         return isinstance(self.price, (int, float)) and self.price >= 0
 
@@ -43,7 +41,7 @@ class Product:
             "stock": self.stock,
             "image": self.image,
         }
-    
+
     def update_from_dict(self, data):
         for key, value in data.items():
             if hasattr(self, key):

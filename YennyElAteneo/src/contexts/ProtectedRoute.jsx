@@ -8,7 +8,7 @@ export default function ProtectedRoute( {children} ){
     if( is_logueado ){
         return children;
     }else{
-        return <Navigate to="/login" />
+        return <Navigate to="/error" />
     }
 
 }

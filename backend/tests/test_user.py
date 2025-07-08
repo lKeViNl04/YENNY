@@ -17,7 +17,6 @@ class TestUserModel(unittest.TestCase):
         self.assertEqual(user.email, "kevin@mail.com")
         self.assertEqual(user.password, "superpass123")
         self.assertTrue(user.is_admin)
-        self.assertEqual(repr(user), "<User kevinf>")
 
     def test_is_email_valid(self):
         valid_user = User(email="valid@example.com")

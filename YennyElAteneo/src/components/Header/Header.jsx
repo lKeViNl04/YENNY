@@ -5,11 +5,11 @@ import NavButton from "./NavButton";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Header() {
   const navigate = useNavigate();
-
-  const { is_logueado, user, logout } = useAuth();
+  const { is_logueado, logout,is_admin } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,8 +20,10 @@ export default function Header() {
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
+    toast("Nos vemos pronto :c")
     navigate("/login");
   };
+
 
   return (
     <header className="fixed top-0 left-0 w-full flex py-4 px-4 sm:px-10 min-h-[70px] tracking-wide z-50 shadow-md bg-black/20 hover:bg-black/40">
@@ -86,7 +88,7 @@ export default function Header() {
             <NavLink to="/shop">Shop</NavLink>
             <NavLink to="/aboutus">About Us</NavLink>
             <NavLink to="/contact">Contact</NavLink>
-            {is_logueado && user && user.is_admin && <NavLink to="/admin">Admin</NavLink>}
+            {is_logueado && is_admin && <NavLink to="/admin">Admin</NavLink>}
           </ul>
         </div>
 

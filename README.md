@@ -2,75 +2,139 @@
     <img src="https://drive.google.com/uc?export=view&id=1akfFdQwowXBWVkAKemuaq1TjVNMWy21H" style="border-radius: 100px;" width="60%">
 </div>
 
-# 📚 YENNY - Sistema de Gestión de Libros y Ventas
+# 📚 YENNY - Book and Sales Management System
 
-📌 **Descripción**
-YENNY es un **Sistema de Gestión de Libros y Ventas**, desarrollado como parte del trabajo práctico de **Análisis y Metodología de Sistemas**. Su objetivo principal es optimizar la administración de libros, ventas, stock y usuarios dentro de una librería.
-
----
-
-## 🎯 Objetivos
-
-* 📖 Facilitar la gestión de libros y su stock.
-* 💰 Automatizar el proceso de ventas y facturación.
-* 👥 Mejorar el control de usuarios, clientes y proveedores.
-* 📦 Agilizar la administración de productos y su disponibilidad.
+YENNY is a **Book and Sales Management System** developed as part of the **Systems Analysis and Methodology** coursework. Its main goal is to optimize the administration of books, sales, stock, and users within a bookstore.
 
 ---
 
-## ⚙️ Tecnologías Utilizadas
+## 🎯 Objectives
 
-### 🔧 Backend
+* 📖 Facilitate book and stock management.
+* 💰 Automate sales and invoicing processes.
+* 👥 Improve control over users, clients, and suppliers.
+* 📦 Streamline product administration and availability.
 
-* **Python**
-* **FastAPI**
-* **SQLite** (almacenamiento local con `database.db`)
-* **Repositorio y Modelo propio** para Users y Products
-* **Testing** con scripts de prueba en `tests/`
-* **Seeds** para carga inicial de datos
+---
 
-### 💻 Frontend
+## ⚙️ Technologies Used
+
+### Backend
+
+* **Python** (Flask)
+* **SQLite** (`database.db`)
+* **Custom repository and models** for Users and Products
+* **Testing** with scripts in `tests/`
+* **Seeds** for initial data loading
+
+### Frontend
 
 * **React.js**
 * **Tailwind CSS**
-* **Axios** para la conexión entre frontend y backend
+* **Axios** for frontend-backend communication
 
 ---
 
-## 🚀 Funcionalidades Desarrolladas
+## 🚀 Features
 
-### ✅ Implementadas
+### ✅ Implemented
 
-* ABM (Alta, Baja, Modificación) de **Usuarios** y **Productos**
-* Navegación diferenciada para usuarios **administradores**
-* Páginas públicas desarrolladas: `Home`, `Shop`, `About`, `Contact`, `Cart`
-* **Integración frontend-backend** mediante Axios
+* CRUD (Create, Read, Update, Delete) for **Users** and **Products**
+* Admin and regular user navigation
+* Public pages: `Home`, `Shop`, `About`, `Contact`, `Cart`
+* **Frontend-backend integration** via Axios
+* Database seeding scripts for users and products
+* Error handling and informative console messages
 
-### 🔜 Pendientes
+### 🔜 In Progress / Planned
 
-* Desarrollo completo del módulo **Carrito (Cart)** con conexión a API
-* Gestión de ventas, facturación y reportes
-* Módulo de perfil de usuario
-* Seguridad y autenticación
+* Full **Cart** module with API connection
+* Sales, invoicing, and reporting modules
+* User profile module
+* Security and authentication
+* Improved error messages and validations
 
 ---
 
-## 📂 Estructura del Proyecto
+## 📂 Project Structure
 
 ```
-├── .venv/
-├── app/
-│   ├── db/
-│   ├── models/
-│   ├── routes/
-│   ├── __init__.py
-│   ├── database.db
-├── seeds/
-├── tests/
-├── run.py
-└── requirements.txt
+├── backend/
+│   ├── app/
+│   │   ├── db/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── database.db
+│   ├── seeds/
+│   ├── tests/
+│   ├── run.py
+│   └── requirements.txt
+├── YennyElAteneo/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── Data.jsx
+│   │   └── ...
+│   ├── public/
+│   └── package.json
+└── README.md
 ```
 
 ---
 
+## 🛠️ Setup Instructions
 
+### Backend
+
+1. Go to the `backend` folder:
+   ```
+   cd backend
+   ```
+2. Create the virtual environment
+   ```
+   py/python -3 -m venv .venv
+   ```
+3. Activate the virtual environment
+   ```
+   .venv\Scripts\activate
+   ```
+4. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+5. Run database seeds:
+   ```
+   python seeds/product_seed.py
+   python seeds/user_seed.py
+   ```
+6. Start the backend server:
+   ```
+   flask --app run run
+   ```
+
+### Frontend
+
+1. Go to the `YennyElAteneo` folder:
+   ```
+   cd YennyElAteneo
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the frontend:
+   ```
+   npm run dev
+   ```
+
+---
+
+## 📌 Notes
+
+- All interface and code are in English.
+- Some comments and example data may be in Spanish, but do not affect the user experience.
+- The project is modular and easy to extend.
+- Database seeds help with initial testing and demo.
+
+---

@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt
 from app.models.product_model import Product
 from app.db.product_repository import ProductRepository
 
@@ -7,27 +8,38 @@ product_bp = Blueprint('product', __name__, url_prefix='/products')
 def get_product_repo():
     return ProductRepository()
 
-#getall
+#funcion auxiliar(Verifica si el usuario autenticado tiene permisos de administrador)
+def is_admin():
+    claims = get_jwt()
+    return claims["is_admin"]
+
+# Devuelve todos los productos disponibles en la base de datos
 @product_bp.route('/getall', methods=['GET'])
 def get_all_products():
     repo = get_product_repo()
     products = repo.get_products()
     product_list = [row.to_dict() for row in products]
-    return jsonify(product_list), 200
+    if not product_list:
+        return jsonify({"error": "No Products found"}), 404
+    return jsonify({"success":True,"products":product_list, "message":"Products found"}), 200
 
-#get by id
+# Devuelve un producto específico según su ID
 @product_bp.route('/get/<int:product_id>', methods=['GET'])
 def get_product_by_id(product_id):
     repo = get_product_repo()
     row = repo.get_product_by_id(product_id)
-    if row:
-        return jsonify(row.to_dict()), 200
-    return jsonify({'error': 'Product not found'}), 404
+    if not row:
+        return jsonify({'error': 'Product not found'}), 404
+    return jsonify({"success":True,"product":row.to_dict(),"message":"Product found"}), 200
 
-#create
+# Crea un nuevo producto (requiere autenticación y ser administrador)
 @product_bp.route('/create', methods=['POST'])
+@jwt_required()
 def create_product():
-    repo = get_product_repo()
+
+    if not is_admin():
+        return jsonify({"error": "Access denied"}), 403
+    
     data = request.json
     
     if 'stock' in data:
@@ -39,14 +51,19 @@ def create_product():
 
     if not product.is_price_valid() or not product.is_stock_valid():
         return jsonify({'error': 'Invalid price or stock'}), 400
-
-    repo.add_product(product)
-    return jsonify({'message': 'Product created'}), 201
-
-#update
-@product_bp.route('/update/<int:product_id>', methods=['PUT'])
-def update_product(product_id):
+    
     repo = get_product_repo()
+    repo.add_product(product)
+    return jsonify({"success": True,'message': 'Product created'}), 201
+
+# Actualiza un producto existente (requiere autenticación y ser administrador)
+@product_bp.route('/update/<int:product_id>', methods=['PUT'])
+@jwt_required()
+def update_product(product_id):
+
+    if not is_admin():
+        return jsonify({"error": "Access denied"}), 403
+
     data = request.json
 
     data.pop('id', None)
@@ -61,15 +78,21 @@ def update_product(product_id):
 
     if not product.is_price_valid() or not product.is_stock_valid():
         return jsonify({'error': 'Invalid price or stock'}), 400
-
+    
+    repo = get_product_repo()
     repo.update_product(product)
-    return jsonify({'message': 'Product updated'}), 200
+    return jsonify({"success": True,'message': 'Product updated'}), 200
 
 
-#delete
+# Elimina un producto por ID (requiere autenticación y ser administrador)
 @product_bp.route('/delete/<int:product_id>', methods=['DELETE'])
+@jwt_required()
 def delete_product(product_id):
+
+    if not is_admin():
+        return jsonify({"error": "Access denied"}), 403
+    
     repo = get_product_repo()
     repo.delete_product(product_id)
-    return jsonify({'message': 'Product deleted'}), 200
+    return jsonify({"success": True,'message': 'Product deleted'}), 200
 
