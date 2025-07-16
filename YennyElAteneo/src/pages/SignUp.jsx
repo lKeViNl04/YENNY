@@ -1,6 +1,6 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -11,8 +11,7 @@ export default function SignUp() {
     email: "",
     password: "",
   });
-
-  const { login } = useAuth();
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -32,17 +31,14 @@ export default function SignUp() {
           },
         }
       );
-      console.log("Usuario registrado:", response.data);
-      const success = await login(formData.email, formData.password);
-      if (success) {
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-        });
-        navigate("/");
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate("/login");
       }
     } catch (error) {
+      const errorMsg = error.response?.data?.error || "Error desconocido";
+      toast.error(errorMsg);
       console.error("Error al registrar usuario:", error);
     }
   };
